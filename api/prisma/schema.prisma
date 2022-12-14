@@ -47,8 +47,8 @@ model Product {
   category    String
   price       Float
   img         String?
-  user   User?  @relation(fields: [userId], references: [id])
-  userId String
+  user        User?         @relation(fields: [userId], references: [id])
+  userId      String
   Ingredients Ingredients[]
   request     Request[]
 }
@@ -65,12 +65,10 @@ model Request {
   user   User?  @relation(fields: [userId], references: [id])
   userId String
 
-  Product    Product? @relation(fields: [productId], references: [id])
-  productId  String?
+  Product   Product? @relation(fields: [productId], references: [id])
+  productId String?
 
   totalPrice Float
-   createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 }
-
