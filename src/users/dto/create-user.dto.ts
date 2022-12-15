@@ -15,5 +15,5 @@ export class CreateUserDto {
     complement?: string
     country: string
     }
-    isAdm?: boolean
+    isAdmin?: boolean
 }
