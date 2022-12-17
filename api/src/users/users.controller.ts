@@ -1,60 +1,53 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, SetMetadata, UseGuards } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { UsersCreateService } from './users.service/usersCreate.service';
-import { UsersDeleteService } from './users.service/usersDelete.service';
-import { UsersListService } from './users.service/usersList.service';
-import { UsersListOneService } from './users.service/usersListOne.service';
-import { UsersUpdateService } from './users.service/usersUpdate.service';
+import { UserAdminService, UsersService } from './users.service';
+import { JwtAuthGuard } from 'src/auth/shared/jwt-auth.guard';
+import { PermissionsGuard } from 'src/auth/permissions.guard';
+import { Roles } from 'src/auth/roles';
+import { RoleGuard } from 'src/auth/roleguard.guard';
 
 @Controller('users')
 export class UsersController {
-  constructor(private readonly usersService: UsersCreateService) { }
+  constructor(
+    private readonly usersService: UsersService,
+    private readonly userAdminService: UserAdminService
+    ) { }
 
   @Post()
   async create(@Body() data: CreateUserDto) {
     return this.usersService.create(data)
   }
-}
 
-@Controller('users')
-export class UsersListController {
-  constructor(private readonly usersListService: UsersListService) { }
+  @Roles('ADMIN')
+  @UseGuards(JwtAuthGuard,RoleGuard)
+  @Post('/admin')
+  async createAdmin(@Body() data: CreateUserDto){
+    return this.userAdminService.create(data)
+  }
 
+  // @UseGuards(JwtAuthGuard,PermissionsGuard)
+  // @SetMetadata('permissions',['read:users'])
   @Get()
   async findAll() {
-    return this.usersListService.findAll()
+    return this.usersService.findAll()
   }
-}
-
-@Controller('users')
-export class UsersUpdateController {
-  constructor(private readonly usersUpdateService: UsersUpdateService) { }
 
   @Put(':id')
   async update(@Param("id") id: string, @Body() data: UpdateUserDto) {
-    return this.usersUpdateService.update(id, data)
+    return this.usersService.update(id, data)
   }
-}
-
-@Controller('users')
-export class UsersDeleteController {
-  constructor(private readonly usersDeleteService: UsersDeleteService) { }
 
   @Delete(':id')
   async delete(@Param("id") id: string) {
-    return this.usersDeleteService.delete(id)
-    
-  }
-}
+    return this.usersService.delete(id)
 
-@Controller('users')
-export class UsersListOneController {
-  constructor(private readonly usersListOneService: UsersListOneService) { }
+  }
 
   @Get(':id')
   async get(@Param("id") id: string) {
-    return this.usersListOneService.findOne(id)
-    
+    return this.usersService.findOne(id)
+
   }
 }
+
