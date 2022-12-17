@@ -1,3 +1,5 @@
+import { Role } from "./role.enum"
+
 export class CreateUserDto {
     id?: string
     name : string
@@ -6,6 +8,7 @@ export class CreateUserDto {
     cpf:string
     phone: string
     birthdate?: string
+    role: Role[]
     address:{
     address: string
     cep: string
@@ -15,5 +18,4 @@ export class CreateUserDto {
     complement?: string
     country: string
     }
-    isAdmin?: boolean
 }
