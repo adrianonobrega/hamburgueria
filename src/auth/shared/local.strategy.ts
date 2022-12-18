@@ -2,6 +2,7 @@ import { Injectable, UnauthorizedException } from "@nestjs/common";
 import { Strategy } from "passport-local";
 import { PassportStrategy } from "@nestjs/passport";
 import { AuthService } from "./auth.service";
+import { ProductsController } from "src/products/products.controller";
 
 @Injectable()
 export class LocalStrategy extends PassportStrategy(Strategy) {
@@ -18,6 +19,7 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
         if (!user) {
             console.log("usuario não existe")
         }
+        
         return user
     }
 }

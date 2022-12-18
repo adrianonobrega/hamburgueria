@@ -5,13 +5,11 @@ https://docs.nestjs.com/modules
 */
 
 import { Module } from '@nestjs/common';
-import { UsersModule } from 'src/users/users.module';
-import { LocalStrategy } from './shared/local.strategy';
-import {JwtModule} from '@nestjs/jwt'
-import { UsersService } from 'src/users/users.service';
+import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
+import { UsersModule } from 'src/users/users.module';
 import { JwtStrategy } from './shared/jwt-strategy';
-import dotenv from 'dotenv/config'
+import { LocalStrategy } from './shared/local.strategy';
 require('dotenv').config()
 
 

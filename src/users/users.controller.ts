@@ -6,6 +6,7 @@ import { JwtAuthGuard } from 'src/auth/shared/jwt-auth.guard';
 import { PermissionsGuard } from 'src/auth/permissions.guard';
 import { Roles } from 'src/auth/roles';
 import { RoleGuard } from 'src/auth/roleguard.guard';
+import { Request } from 'express';
 
 @Controller('users')
 export class UsersController {
@@ -33,8 +34,10 @@ export class UsersController {
     return this.usersService.findAll()
   }
 
+
   @Put(':id')
   async update(@Param("id") id: string, @Body() data: UpdateUserDto) {
+
     return this.usersService.update(id, data)
   }
 

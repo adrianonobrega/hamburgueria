@@ -11,8 +11,6 @@ import { UsersService } from 'src/users/users.service';
 export class RoleGuard implements CanActivate {
   constructor(
     private reflector: Reflector,
-    private prisma: PrismaService,
-    private userService: UsersService
   ) { }
 
   matchRoles(roles: string[], userRole) {
@@ -30,8 +28,6 @@ export class RoleGuard implements CanActivate {
 
     const request = context.switchToHttp().getRequest();
     const user = request.user
-
-
     return this.matchRoles(roles, user.role)
   }
 }
