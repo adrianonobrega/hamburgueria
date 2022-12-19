@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { BadGatewayException, HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/database/PrismaService';
 import { CreateUserDto } from './dto/create-user.dto';
 import { hash } from 'bcrypt'
@@ -92,7 +92,7 @@ export class UsersService {
         })
 
         if (!user) {
-            throw new HttpException("User does not exists!", HttpStatus.NOT_FOUND)
+            throw new Error("User does not exists!")
         }
         delete user.password
         return user
@@ -108,14 +108,14 @@ export class UsersService {
 
 
     async update(id: string, data: UpdateUserDto) {
-        const userExists = await this.prisma.user.findUnique({
-            where: {
-                id
-            }
-        })
-        if (!userExists) {
-            throw new HttpException(`User does not exists!`, HttpStatus.NOT_FOUND)
-        }
+        // const userExists = await this.prisma.user.findUnique({
+        //     where: {
+        //         id
+        //     }
+        // })
+        // if (!userExists) {
+        //    ""
+        // }
 
         const user = await this.prisma.user.update({
             data,

@@ -2,12 +2,15 @@ import { ExecutionContext, HttpException, HttpStatus, Injectable } from '@nestjs
 import { PrismaService } from "src/database/PrismaService"
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
+import { Paginate } from './paginate/paginate';
 
 
 @Injectable()
 export class ProductsService {
 
-  constructor(private prisma: PrismaService,
+  constructor(
+    private prisma: PrismaService,
+    private paginate: Paginate
     ) { }
 
 
@@ -33,17 +36,23 @@ export class ProductsService {
     return product
   }
 
-  async findAll() {
-    const products = this.prisma.product.findMany({
-      include: {
-        Ingredients: {
-          select: {
-            item: true,
-          }
-        }
+  async findAll(page:number, size:number,search:string) {
+    
+    const {results,totalItems} = await this.paginate.pages(page, size,search)
+    const totalPages = Math.ceil(totalItems/ size) - 1
+    const currentPage = Number(page)
+    return{
+      results,
+      pagination:{
+        length: totalItems,
+        size: size,
+        lastPage: totalPages,
+        page: currentPage,
+        startIndex: currentPage * size,
+        endIndex: currentPage * size + (size-1)
+
       }
-    })
-    return products
+    }
   }
 
   async findOne(id: string) {
@@ -57,7 +66,7 @@ export class ProductsService {
   })
 
   if (!product) {
-      throw new HttpException("Product does not exists!", HttpStatus.NOT_FOUND)
+      throw new HttpException("",HttpStatus.BAD_GATEWAY)
   }
  
   return product
@@ -70,9 +79,7 @@ export class ProductsService {
             id
         }
     })
-    if (!productExists) {
-        throw new HttpException(`Product does not exists!`, HttpStatus.NOT_FOUND)
-    }
+  
     await this.prisma.product.delete({
         where: {
             id
