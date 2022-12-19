@@ -31,21 +31,21 @@ export class ProductsController {
   @Roles('ADMIN')
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  async findOne(@Param('id') id: string) {
 
-    return this.productsService.findOne(id);
+    return await this.productsService.findOne(id);
 
   }
   @Roles('ADMIN')
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Put(':id')
-  update(@Param('id') id: string, @Body() updateProductDto: UpdateProductDto) {
-    return this.productsService.update(id, updateProductDto);
+  async update(@Param('id') id: string, @Body() updateProductDto: UpdateProductDto) {
+    return await this.productsService.update(id, updateProductDto);
   }
   @Roles('ADMIN')
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Delete(':id')
-  delete(@Param('id') id: string) {
-    return this.productsService.delete(id);
+  async delete(@Param('id') id: string) {
+    return await this.productsService.delete(id);
   }
 }

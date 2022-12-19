@@ -10,6 +10,9 @@ export class Paginate {
             skip: page * size,
             take: Number(size),
             where:{name: {contains:search}},
+            include: {
+                Ingredients: true
+              }
         })
         const totalItems = await this.prisma.product.count({
             where:{name: {contains:search,mode:'insensitive'}, },

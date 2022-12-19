@@ -17,19 +17,19 @@ export class UsersController {
 
   @Post()
   async create(@Body() data: CreateUserDto) {
-    return this.usersService.create(data)
+    return await this.usersService.create(data)
   }
 
   @Roles('ADMIN')
   @UseGuards(JwtAuthGuard,RoleGuard)
   @Post('/admin')
   async createAdmin(@Body() data: CreateUserDto){
-    return this.userAdminService.create(data)
+    return await this.userAdminService.create(data)
   }
 
   @Get()
   async findAll() {
-    return this.usersService.findAll()
+    return await this.usersService.findAll()
   }
 
 
@@ -41,7 +41,7 @@ export class UsersController {
 
   @Delete(':id')
   async delete(@Param("id") id: string) {
-    return this.usersService.delete(id)
+    return await this.usersService.delete(id)
 
   }
 
@@ -49,7 +49,7 @@ export class UsersController {
   @UseGuards(JwtAuthGuard,RoleGuard)
   @Get(':id')
   async get(@Param("id") id: string) {
-    return this.usersService.findOne(id)
+    return await this.usersService.findOne(id)
 
   }
 }
