@@ -3,6 +3,7 @@ import { PrismaService } from 'src/database/PrismaService';
 import { CreateUserDto } from './dto/create-user.dto';
 import { hash } from 'bcrypt'
 import { UpdateUserDto } from './dto/update-user.dto';
+import { AppError } from 'src/errors/appError';
 
 @Injectable()
 export class UsersService {
@@ -21,7 +22,7 @@ export class UsersService {
         data = { ...data, password: hashedPassword }
 
         if (isNotUnique) {
-            throw new HttpException("An user with this email, cpf or phone has already been registered", HttpStatus.BAD_REQUEST)
+            throw new AppError("An user with this email, cpf or phone has already been registered")
         }
         const user = await this.prisma.user.create({
             data: {
@@ -54,13 +55,13 @@ export class UsersService {
 
 
     async delete(id: string) {
-        const userExists = await this.prisma.user.findUnique({
+        const user = await this.prisma.user.findUnique({
             where: {
                 id
-            }
+            },
         })
-        if (!userExists) {
-            throw new HttpException(`User does not exists!`, HttpStatus.NOT_FOUND)
+        if (!user) {
+            throw new AppError("User not found")
         }
         await this.prisma.user.delete({
             where: {
@@ -74,7 +75,11 @@ export class UsersService {
 
 
     async findAll() {
-        const users = await this.prisma.user.findMany()
+        const users = await this.prisma.user.findMany({
+            include: {
+                Address: true
+            }
+        })
 
         users.map((user) => { delete user.password })
 
@@ -84,23 +89,22 @@ export class UsersService {
     async findOne(id: string) {
         const user = await this.prisma.user.findUnique({
             where: {
-                id,
+                id
             },
             include: {
                 Address: true
             }
         })
-
         if (!user) {
-            throw new Error("User does not exists!")
+            throw new AppError("User not found")
         }
         delete user.password
         return user
     }
 
-    async findEmail(email: string){
+    async findEmail(email: string) {
         return await this.prisma.user.findUnique({
-            where:{
+            where: {
                 email,
             }
         })
@@ -108,26 +112,29 @@ export class UsersService {
 
 
     async update(id: string, data: UpdateUserDto) {
-        // const userExists = await this.prisma.user.findUnique({
-        //     where: {
-        //         id
-        //     }
-        // })
-        // if (!userExists) {
-        //    ""
-        // }
 
-        const user = await this.prisma.user.update({
-            data,
+        const user = await this.prisma.user.findUnique({
             where: {
                 id
-            }
+            },
         })
-        delete user.password
-        return user
+
+        console.log(user)
+        if (!user) {
+            throw new AppError("User not found")
+        }
+        const hashedPassword = await hash(data.password, 10)
+        data = { ...data, password: hashedPassword }
+        const userUpdate = await this.prisma.user.update({
+            where: {
+                id
+            },
+            data
+        })
+        delete userUpdate.password
+        return userUpdate
     }
 }
-
 
 @Injectable()
 export class UserAdminService {
@@ -144,7 +151,7 @@ export class UserAdminService {
         data = { ...data, password: hashedPassword }
 
         if (isNotUnique) {
-            throw new HttpException("An user with this email, cpf or phone has already been registered", HttpStatus.BAD_REQUEST)
+            throw new AppError("An user with this email, cpf or phone has already been registered")
         }
         const user = await this.prisma.user.create({
             data: {
