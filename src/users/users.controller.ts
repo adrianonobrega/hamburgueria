@@ -27,8 +27,6 @@ export class UsersController {
     return this.userAdminService.create(data)
   }
 
-  // @UseGuards(JwtAuthGuard,PermissionsGuard)
-  // @SetMetadata('permissions',['read:users'])
   @Get()
   async findAll() {
     return this.usersService.findAll()
@@ -47,6 +45,8 @@ export class UsersController {
 
   }
 
+  @Roles('ADMIN')
+  @UseGuards(JwtAuthGuard,RoleGuard)
   @Get(':id')
   async get(@Param("id") id: string) {
     return this.usersService.findOne(id)
