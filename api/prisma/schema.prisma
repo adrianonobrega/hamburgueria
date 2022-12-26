@@ -22,7 +22,6 @@ model User {
   updatedAt DateTime  @updatedAt
   role      Role      @default(USER)
   Address   Address?
-  Request   Request[]
   Product   Product[]
 }
 
@@ -46,18 +45,6 @@ model Address {
   userId     String   @unique
 }
 
-model Product {
-  id          String        @id @default(uuid())
-  name        String
-  category    String
-  price       Float
-  img         String?
-  user        User?         @relation(fields: [userId], references: [id])
-  userId      String
-  Ingredients Ingredients[]
-  request     Request[]
-}
-
 model Ingredients {
   id        String  @id @default(uuid())
   item      String
@@ -65,15 +52,36 @@ model Ingredients {
   productId String
 }
 
-model Request {
-  id     String @id @default(uuid())
-  user   User?  @relation(fields: [userId], references: [id])
-  userId String
+model Product {
+  id          String          @id @default(uuid())
+  name        String
+  category    String
+  price       Float
+  img         String?
+  user        User?           @relation(fields: [userId], references: [id])
+  userId      String
+  Ingredients Ingredients[]
+  Item        Item[]
+}
 
-  Product   Product? @relation(fields: [productId], references: [id])
-  productId String?
+model Order {
+  id         String    @id @default(uuid())
+  table      Int
+  status     String   
+  draft      Boolean   @default(true)
+  name       String?
+  created_at DateTime? @default(now())
+  created_up DateTime? @default(now())
+  items Item[]
+}
 
-  totalPrice Float
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+model Item {
+  id         String    @id @default(uuid())
+  amount     Int
+  created_at DateTime? @default(now())
+  created_up DateTime? @default(now())
+  order      Order   @relation(fields: [order_id], references: [id])
+  product    Product @relation(fields: [product_id], references: [id])
+  order_id   String
+  product_id String
 }
