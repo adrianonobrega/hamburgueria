@@ -3,6 +3,7 @@ import { Strategy } from "passport-local";
 import { PassportStrategy } from "@nestjs/passport";
 import { AuthService } from "./auth.service";
 import { ProductsController } from "src/products/products.controller";
+import { AppError } from "src/errors/appError";
 
 @Injectable()
 export class LocalStrategy extends PassportStrategy(Strategy) {
@@ -17,7 +18,7 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
 
         const user = await this.authService.validateUser(email, password)
         if (!user) {
-            console.log("usuario não existe")
+            throw new AppError("User not found")
         }
         
         return user

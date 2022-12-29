@@ -1,11 +1,6 @@
-/*
-https://docs.nestjs.com/guards#guards
-*/
-
-import { Injectable, CanActivate, ExecutionContext, ForbiddenException } from '@nestjs/common';
-import { Reflector } from '@nestjs/core'
-import { PrismaService } from 'src/database/PrismaService';
-import { UsersService } from 'src/users/users.service';
+import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
+import { Reflector } from '@nestjs/core';
+import { AppError } from 'src/errors/appError';
 
 @Injectable()
 export class RoleGuard implements CanActivate {
@@ -19,7 +14,7 @@ export class RoleGuard implements CanActivate {
       return true
     }
     else{
-      throw new ForbiddenException("não tem permissão")
+      throw new AppError("User does not have permission")
     }
   }
   canActivate(context: ExecutionContext,): boolean {
