@@ -7,7 +7,9 @@ import { PermissionsGuard } from 'src/auth/permissions.guard';
 import { Roles } from 'src/auth/roles';
 import { RoleGuard } from 'src/auth/roleguard.guard';
 import { Request } from 'express';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Users')
 @Controller('users')
 export class UsersController {
   constructor(
@@ -20,37 +22,45 @@ export class UsersController {
     return await this.usersService.create(data)
   }
 
-  // @Roles('ADMIN')
-  // @UseGuards(JwtAuthGuard,RoleGuard)
+  @Roles('ADMIN')
+  @UseGuards(JwtAuthGuard,RoleGuard)
   @Post('/admin')
+  @ApiBearerAuth()
   async createAdmin(@Body() data: CreateUserDto){
     return await this.userAdminService.create(data)
   }
 
+  @Roles('ADMIN')
+  @UseGuards(JwtAuthGuard, RoleGuard)
   @Get()
+  @ApiBearerAuth()
   async findAll() {
     return await this.usersService.findAll()
   }
 
-
+  
+  @UseGuards(JwtAuthGuard)
   @Put(':id')
+  @ApiBearerAuth()
   async update(@Param("id") id: string, @Body() data: UpdateUserDto) {
 
     return this.usersService.update(id, data)
   }
 
+  @Roles('ADMIN')
+  @UseGuards(JwtAuthGuard, RoleGuard)
   @Delete(':id')
+  @ApiBearerAuth()
   async delete(@Param("id") id: string) {
     return await this.usersService.delete(id)
 
   }
 
-  @Roles('ADMIN')
-  @UseGuards(JwtAuthGuard,RoleGuard)
+  @UseGuards(JwtAuthGuard)
   @Get(':id')
+  @ApiBearerAuth()
   async get(@Param("id") id: string) {
     return await this.usersService.findOne(id)
-
   }
 }
 

@@ -73,6 +73,7 @@ model Order {
   created_at DateTime? @default(now())
   created_up DateTime? @default(now())
   items Item[]
+  total Float?
 }
 
 model Item {
@@ -80,7 +81,7 @@ model Item {
   amount     Int
   created_at DateTime? @default(now())
   created_up DateTime? @default(now())
-  order      Order   @relation(fields: [order_id], references: [id])
+  order      Order   @relation(fields: [order_id], references: [id],onDelete: Cascade)
   product    Product @relation(fields: [product_id], references: [id])
   order_id   String
   product_id String

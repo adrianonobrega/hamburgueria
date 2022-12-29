@@ -6,8 +6,9 @@ import { Roles } from 'src/auth/roles';
 import { RoleGuard } from 'src/auth/roleguard.guard';
 import { JwtAuthGuard } from 'src/auth/shared/jwt-auth.guard';
 import { LocalStrategy } from 'src/auth/shared/local.strategy';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
-
+@ApiTags('Products')
 @Controller('products')
 export class ProductsController {
   constructor(private readonly productsService: ProductsService,) { }
@@ -15,6 +16,7 @@ export class ProductsController {
   @Roles('ADMIN')
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Post()
+  @ApiBearerAuth()
   async create(@Request() req, @Body() data: CreateProductDto) {
 
     return await this.productsService.create(data, req.user);
@@ -28,8 +30,7 @@ export class ProductsController {
       request.query.hasOwnProperty('search') ? request.query.search : '',
     )
   }
-  @Roles('ADMIN')
-  @UseGuards(JwtAuthGuard, RoleGuard)
+  
   @Get(':id')
   async findOne(@Param('id') id: string) {
 
@@ -39,12 +40,14 @@ export class ProductsController {
   @Roles('ADMIN')
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Put(':id')
+  @ApiBearerAuth()
   async update(@Param('id') id: string, @Body() updateProductDto: UpdateProductDto) {
     return await this.productsService.update(id, updateProductDto);
   }
   @Roles('ADMIN')
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Delete(':id')
+  @ApiBearerAuth()
   async delete(@Param('id') id: string) {
     return await this.productsService.delete(id);
   }
