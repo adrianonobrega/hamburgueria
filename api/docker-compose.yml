@@ -1,0 +1,40 @@
+version: "3.9"
+
+services:
+  api:
+    container_name: api-hamburgueria
+    build: .
+    ports:
+      - 9000:9000
+    env_file: .env
+    depends_on:
+      - db
+      - migration
+    volumes:
+      - .:/app/
+      - /app/node_modules
+
+  db:
+    container_name: postgres
+    image: postgres:14.4-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=1234
+      - POSTGRES_DB=hamburgueria
+    ports:
+      - 5431:5432
+    env_file: .env
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+  migration:
+    build: .
+    volumes:
+      - .:/app
+    command: bash -c 'while !</dev/tcp/db/5432; do sleep 1; done; npx prisma migrate deploy'
+    depends_on:
+      - db
+
+volumes:
+  postgres-data:
