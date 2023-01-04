@@ -22,10 +22,10 @@ export class UsersController {
     return await this.usersService.create(data)
   }
 
-  @Roles('ADMIN')
-  @UseGuards(JwtAuthGuard,RoleGuard)
+  // @Roles('ADMIN')
+  // @UseGuards(JwtAuthGuard,RoleGuard)
   @Post('/admin')
-  @ApiBearerAuth()
+  // @ApiBearerAuth()
   async createAdmin(@Body() data: CreateUserDto){
     return await this.userAdminService.create(data)
   }

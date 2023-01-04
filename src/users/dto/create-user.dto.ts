@@ -9,7 +9,7 @@ import {
     MinLength,
 } from 'class-validator';
 import { ApiProperty } from "@nestjs/swagger";
-import { Role } from "./role.enum";
+
 
 export class CreateUserDto extends User {
     @ApiProperty({example: 'Paulo Salvatore',})

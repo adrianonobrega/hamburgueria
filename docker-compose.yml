@@ -21,7 +21,7 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=1234
-      - POSTGRES_DB=hamburgueria
+      - POSTGRES_DB=hamburgueria2
     ports:
       - 5431:5432
     env_file: .env

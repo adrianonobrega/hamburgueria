@@ -17,11 +17,13 @@ export class AuthService {
         private readonly usersService: UsersService,) { }
 
     async validateUser(userEmail: string, userPassword: string) {
+        
         const user = await this.usersService.findEmail(userEmail)
         const isPasswordValid = await bcrypt.compare(userPassword, user.password)
         
         if (!user || !isPasswordValid) {
             throw new AppError("Invalid email or password")
+            
         }
 
         return {

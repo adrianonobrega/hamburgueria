@@ -18,8 +18,8 @@ model User {
   cpf       String    @unique
   phone     String    @unique
   birthdate DateTime?
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  createdAt DateTime?  @default(now())
+  updatedAt DateTime?  @updatedAt
   role      Role      @default(USER)
   Address   Address?
   Product   Product[]
@@ -48,7 +48,7 @@ model Address {
 model Ingredients {
   id        String  @id @default(uuid())
   item      String
-  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  product   Product? @relation(fields: [productId], references: [id], onDelete: Cascade)
   productId String
 }
 

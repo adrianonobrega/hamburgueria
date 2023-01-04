@@ -39,5 +39,5 @@ export class CreateProductDto {
         ]
     })
     @IsArray()
-    ingredients: IngredientsInterface[]
+    ingredients?: IngredientsInterface[]
 }

@@ -14,7 +14,8 @@ import { AppModule } from 'src/app.module';
   providers: [
     PrismaService,
     UsersService,
-    UserAdminService
+    UserAdminService,
+    
     
   ],
   exports:[

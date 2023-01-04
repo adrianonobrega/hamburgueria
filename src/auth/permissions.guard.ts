@@ -21,6 +21,6 @@ export class PermissionsGuard implements CanActivate {
       return true;
       
     }
-    throw new ForbiddenException("não tem permissão")
+    throw new ForbiddenException("User does not have permission")
   }
 }
