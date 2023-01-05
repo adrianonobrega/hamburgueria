@@ -1,5 +1,9 @@
 {
     "version":2,
+    "env":{
+        "DATABASE_URL":"postgres://ifrtabzx:ShvC233tsbWAzciLldWZ6jY3rulLpPJz@kesavan.db.elephantsql.com/ifrtabzx",
+        "JWT_SECRET":"QUALQUER VALOR"
+    },
     "build":{
         "src":"src/main.ts",
         "use":"@vercel/node"
