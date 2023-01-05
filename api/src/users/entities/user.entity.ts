@@ -1,4 +1,7 @@
-import { Role } from "../dto/role.enum"
+enum Role {
+    User = 'USER',
+    Admin = 'ADMIN',
+  }
 
 export class User {
     id?: string
