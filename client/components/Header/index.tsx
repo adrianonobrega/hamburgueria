@@ -1,7 +1,6 @@
 import {FiShoppingCart} from 'react-icons/fi'
 import { useContext } from 'react';
 import { CartContex, CartProps } from '../../provider/cart';
-import { Input } from '../Input';
 import { ProductContex } from '../../provider/product';
 import { ProductProps } from '../../interfaces/product';
 

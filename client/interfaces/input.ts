@@ -14,13 +14,15 @@ export interface InputRegistrationProps {
     birth_date: string
     password: string
     cep: string,
-    address: string
-    number: string
-    complement: string
-    state: string
-    city: string
-    country: string
-    phone: string
+    phone:string,
+        address: string
+        number: string
+        complement: string
+        state: string
+        city: string
+        country: string
+    
+    
 }
 
 export interface InputLogin {

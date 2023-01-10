@@ -1,17 +1,36 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
 import { Button, Checkbox, Form, Input } from 'antd';
 import { AiOutlineUser } from 'react-icons/ai';
+import { Api } from '../services/api';
+import { Login } from '../interfaces/user';
+import { toast } from 'react-toastify'
+import { useRouter } from "next/router"
+import { UserContex } from '../provider/user';
+import jwtDecode from 'jwt-decode';
+import { Decode } from '../interfaces/user';
 
 function Login(){
-  const onFinish = (values: any) => {
-    console.log('Success:', values);
+  
+  const { getUser,user } = useContext(UserContex);
+  const navigate = useRouter()
+
+  const onFinish = (values: Login) => {
+    Api.post(`login`,values)
+    .then((res) => {
+      const decode = jwtDecode(res.data.access_token)
+      getUser(decode,res.data.access_token)
+      toast.success("Login efetuado com sucesso")
+      navigate.push("/")
+    })
+    .catch((err) => {
+      toast.error("Email ou senha invalidos")
+      console.log(err)
+    })
   };
 
   const onFinishFailed = (errorInfo: any) => {
     console.log('Failed:', errorInfo);
   };
-
-  
 
   return (
     <Form
@@ -47,7 +66,7 @@ function Login(){
 
       <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
         <Button className='bg-[red]' type="primary" htmlType="submit">
-          Submit
+          Entrar
         </Button>
       </Form.Item>
     </Form>

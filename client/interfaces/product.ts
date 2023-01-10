@@ -1,6 +1,6 @@
 export interface ProductProps {
     startsWith: any;
-    id:number
+    id:string
     img:string,
     name:string,
     category:string,

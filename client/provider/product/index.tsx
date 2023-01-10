@@ -2,6 +2,7 @@ import React,{useEffect} from 'react';
 import {ReactNode, useState } from 'react';
 import { ProductProps } from '../../interfaces/product';
 import axios from 'axios';
+import { Api } from '../../services/api';
 
 
 interface ProductContextValue {
@@ -41,12 +42,12 @@ export const ProductProvider = ({ children }: Props) => {
   const [filteredProducts, setFilteredProducts] = useState();
 
   useEffect(() => {
-    fetch("https://hamburgueria-kenzie-json-serve.herokuapp.com/products")
-      .then((response) => response.json())
-      .then((data) => {
-        setProduct(data)
-      })
-      .catch((erro) => console.log(erro));
+    Api.get(`products/pages?`)
+  .then((res) => {
+    setProduct(res.data.results)
+      
+  })
+  .catch((err) => {console.log(err)})
   }, []);
 
   const filter = product.filter((item:ProductProps) => {
