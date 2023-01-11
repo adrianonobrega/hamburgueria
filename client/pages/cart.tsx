@@ -3,14 +3,10 @@ import { Product } from '../components/Product'
 import { Cart } from '../components/Cart'
 
 export default function Home() {
-  return (
-    <>
-   <Header/>
-   <div className='flex'>
-   <Product/>
-   {/* <Cart/> */}
-   </div>
-   
-    </>
-  )
+    return (
+
+        <div className='flex'>
+            <Cart />
+        </div>
+    )
 }

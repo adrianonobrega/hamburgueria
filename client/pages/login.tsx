@@ -17,6 +17,7 @@ function Login(){
   const onFinish = (values: Login) => {
     Api.post(`login`,values)
     .then((res) => {
+      localStorage.setItem('token',res.data.access_token)
       const decode = jwtDecode(res.data.access_token)
       getUser(decode,res.data.access_token)
       toast.success("Login efetuado com sucesso")

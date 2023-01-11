@@ -10,9 +10,12 @@ export const QuantityController = ({ product }) => {
 
   return (
     <>
+    <div>
       <button onClick={() => removeProduct(product.id)}> - </button>
       <span>{product.quantity}</span>
       <button onClick={() => addProduct(product.id)}> + </button>
+    </div>
+     
     </>
   );
 };
