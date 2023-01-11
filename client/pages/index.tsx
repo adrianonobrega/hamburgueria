@@ -8,7 +8,6 @@ export default function Home() {
    <Header/>
    <div className='flex'>
    <Product/>
-   {/* <Cart/> */}
    </div>
    
     </>

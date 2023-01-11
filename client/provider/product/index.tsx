@@ -1,7 +1,6 @@
 import React,{useEffect} from 'react';
 import {ReactNode, useState } from 'react';
 import { ProductProps } from '../../interfaces/product';
-import axios from 'axios';
 import { Api } from '../../services/api';
 
 
