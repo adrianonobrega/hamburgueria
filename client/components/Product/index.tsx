@@ -4,10 +4,14 @@ import { ProductProps } from '../../interfaces/product';
 import { CartContex } from '../../provider/cart';
 import { UserContex } from '../../provider/user';
 import { Button, Checkbox, Form, Input } from 'antd';
+import { AuthContext } from '../../provider/auth';
 
 export function Product() {
   const { filter } = useContext(ProductContex)
   const {addCart } = useContext(CartContex)
+
+  
+  
   
   return (
     <div className='w-[1078px] mt-[32px] ml-[115px]  flex-wrap'>
